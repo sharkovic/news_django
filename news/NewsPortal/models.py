@@ -7,9 +7,9 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
 
-    def update_rating(self):
-
-        t = sum(Post.rating_post)
+    # def update_rating(self):
+    #
+    #     t = self.Post.aggregate(sum(Post.rating_post))
 
 class Category(models.Model):
     name_category = models.CharField(max_length=20, unique=True)
@@ -29,7 +29,7 @@ class Post(models.Model):
     date_of_creation = models.DateTimeField(default=datetime.now())
     category = models.ManyToManyField(Category, through='PostCategory')
     title_post = models.CharField(max_length=50)
-    text_post = models.CharField()
+    text_post = models.CharField(max_length=9999)
     rating_post = models.IntegerField(default=0)
 
     def preview(self):
@@ -43,7 +43,7 @@ class PostCategory(models.Model):
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    text_comment = models.CharField()
+    text_comment = models.CharField(max_length=255)
     date_of_creation = models.DateTimeField(default=datetime.now())
     rating_comment = models.IntegerField(default=0)
 
