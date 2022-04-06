@@ -1,15 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.db.models import Sum
 
 
 class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
 
-    # def update_rating(self):
-    #
-    #     t = self.Post.aggregate(sum(Post.rating_post))
+    def update_rating(self):
+
+        Post.objects.all().aggregate(Sum('rating_post'))
 
 class Category(models.Model):
     name_category = models.CharField(max_length=20, unique=True)
