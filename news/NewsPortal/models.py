@@ -5,12 +5,13 @@ from django.db.models import Sum
 
 
 class Author(models.Model):
+    name = models.CharField(max_length=64)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
 
-    def update_rating(self):
-
-        Post.objects.all().aggregate(Sum('rating_post'))
+    # def update_rating(self):
+    #  return self.rating_post.all().aggregate(Sum('rating_post'))
+    #     Post.objects.all().aggregate(Sum('rating_post'))
 
 class Category(models.Model):
     name_category = models.CharField(max_length=20, unique=True)
