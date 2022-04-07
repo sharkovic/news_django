@@ -9,9 +9,11 @@ class Author(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField()
 
-    # def update_rating(self):
-    #  return self.rating_post.all().aggregate(Sum('rating_post'))
-    #     Post.objects.all().aggregate(Sum('rating_post'))
+    def update_rating(self):
+        rating_post = Post.objects.filter(author=self).aggregate(postrating=Sum('rating_post'))
+        self.rating_post = rating_post['postrating']
+        rating_comment = Comment.objects.filter(user=self.user.id).aggregate(comrating=Sum('rating_comment'))
+        self.rating_comment = rating_comment['comrating']
 
 class Category(models.Model):
     name_category = models.CharField(max_length=20, unique=True)
