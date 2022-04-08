@@ -7,26 +7,29 @@ from django.db.models import Sum
 class Author(models.Model):
     name = models.CharField(max_length=64)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=0)
 
     def update_rating(self):
-        rating_post = Post.objects.filter(author=self).aggregate(postrating=Sum('rating_post'))
-        self.rating_post = rating_post['postrating']
-        rating_comment = Comment.objects.filter(user=self.user.id).aggregate(comrating=Sum('rating_comment'))
-        self.rating_comment = rating_comment['comrating']
+        rating_post = self.post_set.aggregate(postrating=Sum('rating_post'))
+        rp = rating_post.get('postrating')
+        rating_comment = self.user.comment_set.aggregate(comrating=Sum('rating_comment'))
+        rc = rating_comment.get('comrating')
+        self.rating = rp * 3 + rc
+        self.save()
+
 
 class Category(models.Model):
     name_category = models.CharField(max_length=20, unique=True)
 
+article = 'article'
+news = 'news'
+ARTICLEORNEWS = [
+    (article, 'Статья'),
+    (news, 'Новость')
+
+]
 
 class Post(models.Model):
-    article = 'article'
-    news = 'news'
-    ARTICLEORNEWS = [
-        (article, 'Статья'),
-        (news, 'Новость')
-
-    ]
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     area_post = models.CharField(max_length=7,
                                  choices=ARTICLEORNEWS)
@@ -38,6 +41,17 @@ class Post(models.Model):
 
     def preview(self):
         return f"{self.text_post[:124]}..."
+
+    def like(self):
+        if self.rating_post >= 0:
+            self.rating_post += 1
+        self.save()
+
+    def dislike(self):
+        if self.rating_post > 0:
+            self.rating_post -= 1
+        self.save()
+
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
@@ -60,4 +74,3 @@ class Comment(models.Model):
         if self.rating_comment > 0:
             self.rating_comment -= 1
         self.save()
-
