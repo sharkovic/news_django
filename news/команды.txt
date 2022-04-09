@@ -56,19 +56,25 @@ user10.author.update_rating()
 user20.author.update_rating()
 
 9.Вывести username и рейтинг лучшего пользователя (применяя сортировку и возвращая поля первого объекта).
-user10.username
-Author.objects.order_by("-rating").values("name")[0]
+
+a = Author.objects.order_by("-rating")[:1]
+for i in a:
+    i.user.username
+    i.rating
 
 10.Вывести дату добавления, username автора, рейтинг, заголовок и превью лучшей статьи, основываясь на лайках/дислайках к этой статье.
 
-Post.objects.order_by("-rating_post").values("author__name", "author__rating", "title_post", "text_post", "date_of_creation")[0]
+a = Post.objects.order_by("-rating_post")[:1]
 
+for i in a:
+    i.title_post
+    i.preview()
+    i.author.user.username
+    i.rating_post
+    i.date_of_creation
 
-
-
-
-
-
+11.Вывести все комментарии (дата, пользователь, рейтинг, текст) к этой статье.
+Post.objects.all().order_by('-rating_post')[0].comment_set.values("date_of_creation","user","rating_comment","text_comment")
 
 
 
