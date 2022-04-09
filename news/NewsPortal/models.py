@@ -33,7 +33,7 @@ class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     area_post = models.CharField(max_length=7,
                                  choices=ARTICLEORNEWS)
-    date_of_creation = models.DateTimeField(default=datetime.now())
+    date_of_creation = models.DateTimeField(auto_now_add=True)
     category = models.ManyToManyField(Category, through='PostCategory')
     title_post = models.CharField(max_length=50)
     text_post = models.CharField(max_length=9999)
@@ -63,7 +63,7 @@ class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text_comment = models.CharField(max_length=255)
-    date_of_creation = models.DateTimeField(default=datetime.now())
+    date_of_creation = models.DateTimeField(auto_now_add=True)
     rating_comment = models.IntegerField(default=0)
 
     def like(self):
