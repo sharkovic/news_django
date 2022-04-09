@@ -39,8 +39,9 @@ class Post(models.Model):
     text_post = models.CharField(max_length=9999)
     rating_post = models.IntegerField(default=0)
 
+
     def preview(self):
-        return f"{self.text_post[:124]}..."
+        return f"{self.text_post[:125]}..."
 
     def like(self):
         if self.rating_post >= 0:
