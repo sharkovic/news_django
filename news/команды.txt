@@ -1,3 +1,6 @@
+python manage.py shell
+from NewsPortal.models import *
+
 1. Создать двух пользователей (с помощью метода User.objects.create_user('username'))
 user10 = User.objects.create_user("user10")
 user20 = User.objects.create_user("user20")
