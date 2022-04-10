@@ -53,6 +53,8 @@ class Post(models.Model):
             self.rating_post -= 1
         self.save()
 
+    def __str__(self):
+        return f"{self.title_post}"
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
