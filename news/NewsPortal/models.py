@@ -21,6 +21,7 @@ class Author(models.Model):
 class Category(models.Model):
     name_category = models.CharField(max_length=20, unique=True)
 
+
 article = 'article'
 news = 'news'
 ARTICLEORNEWS = [
@@ -28,6 +29,7 @@ ARTICLEORNEWS = [
     (news, 'Новость')
 
 ]
+
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
@@ -54,7 +56,8 @@ class Post(models.Model):
         self.save()
 
     def __str__(self):
-        return f"{self.title_post}"
+        return f"{self.text_post}"
+
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
