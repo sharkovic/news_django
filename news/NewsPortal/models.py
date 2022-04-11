@@ -55,8 +55,8 @@ class Post(models.Model):
             self.rating_post -= 1
         self.save()
 
-    def __str__(self):
-        return f"{self.text_post}"
+    # def __str__(self):
+    #     return f"{self.text_post}"
 
 
 class PostCategory(models.Model):

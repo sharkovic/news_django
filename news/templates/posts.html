@@ -4,30 +4,26 @@
 
 <!-- Название у нас будет products -->
 {% block title %}
-{{ flatpage.title }}
+Новости
 {% endblock title %}
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
 <h1>Все Новости</h1>
 
+{% if posts %}
+    {% for post in posts %}
+       <!-- Не забываем, что переменные в шаблоне ничем не отличаются
+        от переменных в Python. Здесь также можно получать доступ к
+        полям объекта модели. Например, здесь мы выводим имя,
+        в следующем столбце описание, и т.д.  -->
+    <a href={{ post.id }}><h1>{{ post.title_post|censor }}</h1></a>
+    <p>{{ post.text_post|censor|truncatechars:21}}</p>
+    <p>Дата добавления: {{ post.date_of_creation|date:'d.m.Y'}}</p>
+    <hr>
 
-{% for post in posts %}
-
-   <!-- Не забываем, что переменные в шаблоне ничем не отличаются
-    от переменных в Python. Здесь также можно получать доступ к
-    полям объекта модели. Например, здесь мы выводим имя,
-    в следующем столбце описание, и т.д.  -->
-
-<h1>{{ post.title_post }} </h1>
-<p>{{ post.text_post|truncatechars:21}}</p>
-<p>Дата добавления: {{ post.date_of_creation|date:'d.m.Y'}}</p>
-<hr>
-
-
-
-
-
-{% endfor %}
-
+    {% endfor %}
+{% else %}
+    <h2>Новосте нет!</h2>
+{% endif %}
 {% endblock content %}
