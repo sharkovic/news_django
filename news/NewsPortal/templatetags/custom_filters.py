@@ -7,11 +7,9 @@ register = template.Library()
 # что это именно фильтр для шаблонов, а не простая функция.
 @register.filter()
 def censor(value):
-#value: значение, к которому нужно применить фильтр
-# Возвращаемое функцией значение подставится в шаблон.
+
     wrong_words = ['судорога', 'пельмень', 'балаклава', 'кочерыжка', 'родственник']
-    value = value.lower()
     for i in wrong_words:
-        if i in value:
+        if i.find(value):
             value = value.replace(i[1::], "*" * len(i))
     return f'{value}'
