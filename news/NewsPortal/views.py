@@ -1,7 +1,7 @@
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 from .models import Post
 from .filters import SearchFilter
-from datetime import datetime
+from .forms import PostForm
 
 
 class PostList(ListView):
@@ -18,9 +18,7 @@ class PostList(ListView):
     paginate_by = 2
 
     def get_queryset(self):
-
         return Post.objects.order_by("-date_of_creation")
-
 
     def get_context_data(self, **kwargs):
         # С помощью super() мы обращаемся к родительским классам
@@ -32,6 +30,7 @@ class PostList(ListView):
         # Добавляем в контекст объект фильтрации.
 
         return context
+
 
 class SearchPost(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -48,7 +47,7 @@ class SearchPost(ListView):
 
     def get_queryset(self):
         # Возвращаем список новостей от свежей до давнишней новости
-        #return Post.objects.order_by("-date_of_creation")
+        # return Post.objects.order_by("-date_of_creation")
         # Получаем обычный запрос
         queryset = super().get_queryset()
         # Используем наш класс фильтрации.
@@ -80,3 +79,13 @@ class PostDetail(DetailView):
     # def get_queryset(self):
     #     # Возвращаем список новостей от свежей до давнишней новости
     #     return Post.objects.get("title_post")
+
+
+class PostCreate(CreateView):
+    # Указываем нашу разработанную форму
+    form_class = PostForm
+    # модель товаров
+    model = Post
+    # и новый шаблон, в котором используется форма.
+    context_object_name = 'post'
+    template_name = 'post_edit.html'

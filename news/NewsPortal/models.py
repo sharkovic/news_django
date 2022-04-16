@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-import datetime
+from django.urls import reverse
 from django.db.models import Sum
 
 
@@ -8,6 +8,9 @@ class Author(models.Model):
     name = models.CharField(max_length=64)
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     rating = models.IntegerField(default=0)
+
+    def __str__(self):
+        return f'{self.name}'
 
     def update_rating(self):
         rating_post = self.post_set.aggregate(postrating=Sum('rating_post'))
@@ -21,6 +24,8 @@ class Author(models.Model):
 class Category(models.Model):
     name_category = models.CharField(max_length=20, unique=True)
 
+    def __str__(self):
+        return f'{self.name_category}'
 
 article = 'article'
 news = 'news'
@@ -36,10 +41,11 @@ class Post(models.Model):
     area_post = models.CharField(max_length=7,
                                  choices=ARTICLEORNEWS)
     date_of_creation = models.DateTimeField(auto_now_add=True)
-    category = models.ManyToManyField(Category, through='PostCategory')
+    category = models.ManyToManyField(Category, through='PostCategory', related_name='category')
     title_post = models.CharField(max_length=50)
     text_post = models.CharField(max_length=9999)
     rating_post = models.IntegerField(default=0)
+
 
 
     def preview(self):
@@ -55,13 +61,16 @@ class Post(models.Model):
             self.rating_post -= 1
         self.save()
 
-    # def __str__(self):
-    #     return f"{self.text_post}"
+    def get_absolute_url(self):
+        return reverse('post_detail', args=[str(self.id)])
 
 
 class PostCategory(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.category}'
 
 
 class Comment(models.Model):
