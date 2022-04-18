@@ -24,4 +24,5 @@ urlpatterns = [
     path('posts/', include('NewsPortal.urls')),
 
 
+
 ]

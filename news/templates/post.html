@@ -11,7 +11,8 @@
     <h1>{{ post.title_post|censor }}</h1>
     <p>{{ post.text_post|censor}}</p>
     <p>Дата загрузки: {{ post.date_of_creation|date:'d.m.Y' }}</p>
-
+    <a href="/posts/{{ post.area_post}}/{{ post.id }}/update">Внести изменения</a>
+    <a href="/posts/{{ post.area_post}}/{{ post.id }}/delete">Удалить</a>
 
 
 {% endblock content %}

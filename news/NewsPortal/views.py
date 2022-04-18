@@ -1,4 +1,5 @@
-from django.views.generic import ListView, DetailView, CreateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post
 from .filters import SearchFilter
 from .forms import PostForm
@@ -81,11 +82,46 @@ class PostDetail(DetailView):
     #     return Post.objects.get("title_post")
 
 
-class PostCreate(CreateView):
+class NewsCreate(CreateView):
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель товаров
     model = Post
     # и новый шаблон, в котором используется форма.
     context_object_name = 'post'
-    template_name = 'post_edit.html'
+    template_name = 'post_create.html'
+
+    def form_valid(self, form):
+        news = form.save(commit=False)
+        news.area_post = 'news'
+        return super().form_valid(form)
+
+
+class ArticleCreate(CreateView):
+    # Указываем нашу разработанную форму
+    form_class = PostForm
+    # модель товаров
+    model = Post
+    # и новый шаблон, в котором используется форма.
+    context_object_name = 'post'
+    template_name = 'post_create.html'
+
+    def form_valid(self, form):
+        news = form.save(commit=False)
+        news.area_post = 'article'
+        return super().form_valid(form)
+
+
+class PostUpdate(UpdateView):
+    # Указываем нашу разработанную форму
+    form_class = PostForm
+    # модель товаров
+    model = Post
+    # и новый шаблон, в котором используется форма.
+    context_object_name = 'post'
+    template_name = 'post_create.html'
+
+class PostDelete(DeleteView):
+    model = Post
+    template_name = 'delete_post.html'
+    success_url = reverse_lazy('posts')
