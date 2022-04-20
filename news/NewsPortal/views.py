@@ -1,8 +1,9 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Post
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from .models import Post, User
 from .filters import SearchFilter
-from .forms import PostForm
+from .forms import PostForm, UserForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class PostList(ListView):
@@ -121,7 +122,23 @@ class PostUpdate(UpdateView):
     context_object_name = 'post'
     template_name = 'post_create.html'
 
+
 class PostDelete(DeleteView):
     model = Post
     template_name = 'delete_post.html'
     success_url = reverse_lazy('posts')
+
+
+class UserUpdate(LoginRequiredMixin, UpdateView):
+    # Указываем нашу разработанную форму
+    form_class = UserForm
+    # модель товаров
+    model = User
+    # и новый шаблон, в котором используется форма.
+    context_object_name = 'user_update'
+    template_name = 'user_update.html'
+    success_url = reverse_lazy('posts')
+
+
+class ProtectedView(LoginRequiredMixin, TemplateView):
+    template_name = 'user_update.html'
