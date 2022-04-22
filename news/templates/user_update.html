@@ -7,5 +7,9 @@
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Save" />
+    <button><a href="sign/upgrade/">Хочу стать автором!</a> </button>
 </form>
+{% if not_author %}
+
+{% endif %}
 {% endblock content %}

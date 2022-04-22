@@ -1,4 +1,5 @@
 from django.urls import path
+from .views import upgrade_me
 # Импортируем созданное нами представление
 from .views import PostList, PostDetail, SearchPost, NewsCreate, PostUpdate, PostDelete, ArticleCreate, UserUpdate
 
@@ -10,6 +11,7 @@ urlpatterns = [
    # Т.к. наше объявленное представление является классом,
    # а Django ожидает функцию, нам надо представить этот класс в виде view.
    # Для этого вызываем метод as_view.
-
+   path('upgrade/', upgrade_me, name = 'upgrade'),
    path('<int:pk>/update/', UserUpdate.as_view(), name='user_update'),
+
 ]
